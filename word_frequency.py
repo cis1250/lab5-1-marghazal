@@ -5,22 +5,48 @@
 
 import re
 
-#This is a function that checks if a text qualifies as a sentence. You do not need to modify this!
 def is_sentence(text):
-    # Check if the text is not empty and is a string
-    if not isinstance(text, str) or not text.strip():
-        return False
+  if not isinstance(text, str) or not text.strip():
+    return False
+  if not text[0].isupper():
+    return False
+  if not re.search(r'[.!?]$', text):
+    return False
+  if not re.search(r'\w+', text):
+    return False
+  return True
 
-    # Check for starting with a capital letter
-    if not text[0].isupper():
-        return False
+def get_sentence():
+  s = input("Enter a sentence: ")
+  while not is_sentence(s):
+    print("That doesn’t count as a proper sentence.")
+    s = input("Enter a sentence: ")
+  return s
 
-    # Check for ending punctuation
-    if not re.search(r'[.!?]$', text):
-        return False
+def calculate_frequencies(sentence):
+  sentence = re.sub(r'[^\w\s]', '', sentence)   # remove commas, periods, etc.
+  words = sentence.lower().split()
+  word_list = []
+  freq_list = []
 
-    # Check if it contains at least one word (non-whitespace characters)
-    if not re.search(r'\w+', text):
-        return False
+  for w in words:
+    if w in word_list:
+      i = word_list.index(w)
+      freq_list[i] += 1
+    else:
+      word_list.append(w)
+      freq_list.append(1)
+  return word_list, freq_list
 
-    return True
+def print_frequencies(words, freq):
+  print("\nWord frequencies:")
+  for i in range(len(words)):
+    print(words[i], ":", freq[i])
+
+def main():
+  s = get_sentence()
+  words, freq = calculate_frequencies(s)
+  print_frequencies(words, freq)
+
+if __name__ == "__main__":
+  main()
