@@ -24,7 +24,7 @@ def get_sentence():
   return s
 
 def calculate_frequencies(sentence):
-  sentence = re.sub(r'[^\w\s]', '', sentence)   # remove commas, periods, etc.
+  sentence = re.sub(r'[^\w\s]', '', sentence)  # removes ALL punctuation
   words = sentence.lower().split()
   word_list = []
   freq_list = []
@@ -50,3 +50,4 @@ def main():
 
 if __name__ == "__main__":
   main()
+
