@@ -12,38 +12,40 @@ def is_sentence(text):
     return False
   if not re.search(r'[.!?]$', text):
     return False
+  if not re.search(r'\w+', text):
+    return False
   return True
 
 def get_sentence():
-  s = input("Enter a sentence: ")
-  while not is_sentence(s):
+  sentence = input("Enter a sentence: ")
+  while not is_sentence(sentence):
     print("That doesn’t count as a proper sentence.")
-    s = input("Enter a sentence: ")
-  return s
+    sentence = input("Enter a sentence: ")
+  return sentence
 
 def calculate_frequencies(sentence):
-  sentence = re.sub(r'[^\w\s]', '', sentence)  # removes punctuation
-  words = sentence.lower().split()
+  sentence = sentence[:-1].lower()                  # removes last punctuation
+  words = re.findall(r"\b\w+\b", sentence.lower())  # removes punctuation in words
   word_list = []
   freq_list = []
 
-  for w in words:
-    if w in word_list:
-      i = word_list.index(w)
-      freq_list[i] += 1
+  for word in words:
+    if word in word_list:
+      index = word_list.index(word)
+      freq_list[index] += 1
     else:
-      word_list.append(w)
+      word_list.append(word)
       freq_list.append(1)
   return word_list, freq_list
 
 def print_frequencies(words, freq):
-  print("\nWord frequencies:")
+  print("\nWord Frequencies:")
   for i in range(len(words)):
     print(words[i], ":", freq[i])
 
 def main():
-  s = get_sentence()
-  words, freq = calculate_frequencies(s)
+  sentence = get_sentence()
+  words, freq = calculate_frequencies(sentence)
   print_frequencies(words, freq)
 
 if __name__ == "__main__":
